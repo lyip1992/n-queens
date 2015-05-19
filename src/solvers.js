@@ -73,10 +73,81 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var foundSolution = false;
+  var board = new Board({'n':n});
+  var finalBoard;
+  debugger;
+  var checkRow = function(rowVal) {
+    var columnVal = 0;
+    while (!foundSolution && columnVal < n) {
+    // for (var columnVal = 0; columnVal < n; columnVal++) {
+      //debugger;
+      board.togglePiece(rowVal, columnVal);
+      if (!board.hasAnyQueensConflicts()) {
+        if (rowVal === n - 1) {
+          foundSolution = true;
+          finalBoard = new Board(board.rows());
+        } else {
+          checkRow(rowVal + 1);
+          board.togglePiece(rowVal, columnVal);
+          columnVal++;
+        }
+      } else {
+         board.togglePiece(rowVal, columnVal);
+         columnVal++;
+      }
+    }
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+    if (foundSolution) {
+      return finalBoard;
+    }
+
+  };
+
+  checkRow(0);
+
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(finalBoard.rows()));
+  return finalBoard.rows();
+// n === 4
+
+
+//   console.log(n)
+//   var solution = new Board({'n':n});
+
+//   var checkRow = function(row, column) {
+
+//     var colVal = column;
+
+//     if (colVal >= n) {
+//       if (n % 2 === 0) {
+//         colVal = (colVal % n) + 1;
+//       } else {
+//       colVal = colVal % n;
+//       }
+//     }
+
+//     solution.togglePiece(row, colVal);
+//     if (solution.hasAnyQueensConflicts()) {
+//       solution.toggle(row, colVal);
+//       if (row < n - 1) {
+//         return;
+//       }
+//     } else {
+//       if (row < n - 1) {
+//         checkRow(row + 1, colVal + 2);
+//       } else {
+//         return;
+//       }
+//     }
+
+//   };
+//   if(n === 0) {
+//     return solution.rows();
+//   }
+//   solution.togglePiece(0,0);
+//   checkRow(1,2);
+
+
 };
 
 
