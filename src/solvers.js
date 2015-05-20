@@ -43,30 +43,27 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = 0;
-  var board = new Board({'n':n});
+  var board = new Board({n:n});
+  var counter = 0;
 
-  var checkRow = function(rowVal) {
-    for (var columnVal = 0; columnVal < n; columnVal++) {
-      board.togglePiece(rowVal, columnVal);
-      if (!board.hasAnyRooksConflicts()) {
-        if (rowVal === n - 1) {
-          solutionCount++;
-          board.togglePiece(rowVal, columnVal);
-        } else {
-          checkRow(rowVal + 1);
-          board.togglePiece(rowVal, columnVal);
-        }
-      } else {
-         board.togglePiece(rowVal, columnVal);
-      }
+  var findSolution = function(row) {
+    if (row === n) {
+      counter++;
+      return;
     }
-  };
 
-  checkRow(0);
+    for ( var col = 0; col < n; col++) {
+      board.togglePiece(row, col);
+      if(!board.hasAnyRooksConflicts()) {
+        findSolution(row+1);
+      }
+      board.togglePiece(row, col);
+    }
+  }
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  findSolution(0);
+  console.log('Number of solutions for ' + n + ' rooks:', counter);
+  return counter;
 
 };
 
@@ -105,6 +102,33 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
+
+  var board = new Board({n:n});
+  var counter = 0;
+
+  var findSolution = function(row) {
+    if (row === n) {
+      counter++;
+      return;
+    }
+
+    for ( var col = 0; col < n; col++) {
+      board.togglePiece(row, col);
+      if(!board.hasAnyQueensConflicts()) {
+        findSolution(row+1);
+      }
+      board.togglePiece(row, col);
+    }
+  }
+
+  findSolution(0);
+
+
+
+
+
+
+/*
   if (n === 0) {
     return 1;
   }
@@ -130,8 +154,8 @@ window.countNQueensSolutions = function(n) {
   };
 
   checkRow(0);
-
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+*/
+  console.log('Number of solutions for ' + n + ' queens:', counter);
+  return counter;
 
 };
